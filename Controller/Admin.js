@@ -2,7 +2,7 @@ var Admin = require("../Model/Admin");
 var bcrypt = require("bcrypt");
 var jwt = require('jsonwebtoken');
 
-const SECRET_KEY = "ktn_enterprise";
+const SECRET_KEY = "arton_all";
 
 exports.signup = async function (req, res, next) {
   try {

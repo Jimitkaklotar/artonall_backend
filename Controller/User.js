@@ -2,11 +2,11 @@ var Users = require("../Model/User");
 var bcrypt = require("bcrypt");
 var jwt = require('jsonwebtoken');
 
-const SECRET_KEY = "ktn_enterprise";
+const SECRET_KEY = "arton_all";
 
 exports.signup = async function (req, res, next) {
   try {
-    if (!req.body.username || !req.body.email || !req.body.password ||!req.body.mobile_number ) {
+    if (!req.body.username || !req.body.email || !req.body.password) {
       throw new Error("Please Enter your Fields");
     }
     req.body.password = await bcrypt.hash(req.body.password, 8);

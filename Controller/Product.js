@@ -12,7 +12,7 @@ exports.addproduct = async function (req, res) {
       product_material,
       product_frame,
       product_description,
-      product_instruction,
+      product_instructions,
       product_stock,
       product_price,
       product_action,
@@ -25,13 +25,12 @@ exports.addproduct = async function (req, res) {
       !product_material ||
       !product_frame ||
       !product_description ||
-      !product_instruction ||
+      !product_instructions ||
       !product_stock ||
       !req.files.product_image_1 ||
       !req.files.product_image_2 ||
       !req.files.product_image_3 ||
       !req.files.product_image_4 ||
-      !req.files.product_image_5 ||
       !product_price ||
       !product_action
     ) {
@@ -45,13 +44,12 @@ exports.addproduct = async function (req, res) {
       product_material,
       product_frame,
       product_description,
-      product_instruction,
+      product_instructions,
       product_stock,
       product_image_1: encodePath(req.files.product_image_1[0].filename),
       product_image_2: encodePath(req.files.product_image_2[0].filename),
       product_image_3: encodePath(req.files.product_image_3[0].filename),
       product_image_4: encodePath(req.files.product_image_4[0].filename),
-      product_image_5: encodePath(req.files.product_image_4[0].filename),
       product_price,
       product_action,
     };
@@ -71,7 +69,40 @@ exports.addproduct = async function (req, res) {
   }
 };
 
-exports.getAllProducts = async function (req, res) {
+exports.getProduct = async function (req, res) {
+  try {
+    const { product_id } = req.body;
+
+    // Validate ID
+    if (!product_id || !mongoose.Types.ObjectId.isValid(product_id)) {
+      return res.status(400).json({
+        status: "Fail",
+        message: "Invalid or missing product ID",
+      });
+    }
+
+    const product = await Product.findById(product_id);
+
+    if (!product) {
+      return res.status(404).json({
+        status: "Fail",
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "Success",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Fail",
+      message: error.message,
+    });
+  }
+};
+
+exports.GetAllProducts = async function (req, res) {
   try {
     const products = await Product.find({});
     res.status(200).json({
@@ -111,9 +142,6 @@ exports.updateProduct = async function (req, res) {
       }
       if (req.files.product_image_4) {
         updateData.product_image_4 = encodePath(req.files.product_image_4[0].filename);
-      }
-      if (req.files.product_image_5) {
-        updateData.product_image_5 = encodePath(req.files.product_image_5[0].filename);
       }
     }
 

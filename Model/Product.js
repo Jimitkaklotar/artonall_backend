@@ -13,7 +13,6 @@ const ProductSchema = new Schema({
   product_image_2: String,
   product_image_3: String,
   product_image_4: String,
-  product_image_5: String,
   product_price: String,
   product_register_date_at: { type: Date, default: Date.now },
   product_action: {

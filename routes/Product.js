@@ -24,16 +24,15 @@ router.post('/addproduct', upload.fields([
   { name: 'product_image_2', maxCount: 1 },
   { name: 'product_image_3', maxCount: 1 },
   { name: 'product_image_4', maxCount: 1 },
-  { name: 'product_image_5', maxCount: 1 },
 ]), ProductController.addproduct);
 
-router.get("/getproducts", ProductController.getAllProducts);
+router.get("/getallproducts", ProductController.GetAllProducts);
+router.get("/getproduct", ProductController.getProduct);
 router.patch("/updateproduct", upload.fields([
   { name: 'product_image_1', maxCount: 1 },
   { name: 'product_image_2', maxCount: 1 },
   { name: 'product_image_3', maxCount: 1 },
   { name: 'product_image_4', maxCount: 1 },
-  { name: 'product_image_5', maxCount: 1 },
 ]), ProductController.updateProduct);
 router.delete("/deleteproduct", ProductController.deleteProduct);
 
