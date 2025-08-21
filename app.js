@@ -5,28 +5,34 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-require("dotenv").config();  // ✅ Load .env file
 
+// ✅ Routers
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var userRouter = require("./routes/User");
 var AdminRouter = require("./routes/Admin");
 var ProductRouter = require("./routes/Product");
 
-// ✅ Connect MongoDB Atlas using .env variable
+// ✅ MongoDB connection string
+const MONGODB_CONNECT_URL =
+  "mongodb+srv://jimit_art_on_all:ZHQi4OOLCdrtiwh0@cluster0.qt6kx6h.mongodb.net/ArtOnAll";
+
+// ✅ Connect to MongoDB Atlas
 mongoose
-  .connect(process.env.MONGODB_CONNECT_URL, {
+  .connect(MONGODB_CONNECT_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "ArtOnAll",   // ✅ choose your database name (optional)
+    dbName: "ArtOnAll", // database name
   })
   .then(() => console.log("✅ MongoDB Atlas Connected!"))
-  .catch((error) => console.log("❌ MongoDB connection error:", error.message));
+  .catch((error) =>
+    console.log("❌ MongoDB connection error:", error.message)
+  );
 
 var app = express();
 app.use(cors());
 
-// view engine setup
+// ✅ View engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -36,18 +42,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
+// ✅ Routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/user", userRouter);
 app.use("/admin", AdminRouter);
 app.use("/product", ProductRouter);
 
-// catch 404 and forward to error handler
+// ✅ Catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// ✅ Error handler
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
