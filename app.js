@@ -13,9 +13,14 @@ var ProductRouter = require("./routes/Product");
 
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/ArtOnAll")
-  .then(() => console.log("Connected!"))
-  .catch((error) => console.log(error.message));
+mongoose.connect(process.env.MONGODB_CONNECT_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  dbName: "ArtOnAll" // optional: choose your database name
+})
+.then(() => console.log("MongoDB Connected ✅"))
+.catch((error) => console.error("MongoDB connection error ❌:", error.message));
+
 
 var app = express();
 app.use(cors());
